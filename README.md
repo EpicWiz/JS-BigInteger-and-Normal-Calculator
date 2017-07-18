@@ -8,3 +8,8 @@ A bootstrap and javascript calculator with basic functionality.
 * bootstrap
 * jquery
 * javascript
+
+### More to come.
+
+For now the "+/-", "%", and "." logic needs to be built and are currently disabled.
+Future plans include scientific calculator functionality. -- When I have time --
