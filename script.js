@@ -81,13 +81,40 @@ let sSign = (x) => { //how to handle the second (or more) signs in a single expr
   }
 };
 
+let pMinus = () => {
+  if (num2 === undefined) {
+    num1 = +num1 * -1;
+    display();
+  } else if (num3 === undefined) {
+    num2 = +num2 * -1;
+    display();
+  } else {
+    num3 = +num3 * -1;
+    display();
+  }
+};
+
+//work in progress
+// let perCent = () => {
+//   if (num2 === undefined) {
+//     num1 = +num1 * .01;
+//     display();
+//   } else if (num3 === undefined) {
+//     num2 = +num2 * .01;
+//     display();
+//   } else {
+//     num3 = +num3 * .01;
+//     display();
+//   }
+// };
+
 let signHandler = (x) => { //what to do with selected sign
   switch (x) {
   case 'plusMinus':
-//sc
+    pMinus();
     break;
   case 'percent':
-//sc
+    // perCent();
     break;
   case 'divide':
     if (sign === undefined) {
@@ -117,9 +144,6 @@ let signHandler = (x) => { //what to do with selected sign
       sSign('plus');
       }
     break;
-    case 'point':
-    //special case in numbers indexof('.')
-    break;
     default:
     console.log('An error occured');
   }
@@ -147,19 +171,6 @@ let total = () => {
   }
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 //first row
 $('#ac').on('click', ac);
 $('#plusMinus').on('click', () => signHandler('plusMinus'));
@@ -182,5 +193,131 @@ $('#three').on('click', () => number('3'));
 $('#plus').on('click', () => signHandler('plus'));
 //fifth row
 $('#zero').on('click', () => number('0'));
-$('#point').on('click', () => signHandler('point')); //needs update
+$('#point').on('click', () => number('.'));
 $('#equals').on('click', total);
+
+
+//START BIG-INT calculations
+var type = 'exponent';
+
+function bigExponent() {
+let myInt = +$('#firstNum').val();
+let myPow = +$('#secondNum').val();
+
+let currentN = '1';
+let newN = '';
+let carry = '';
+
+for (var i = 1; i < myPow + 1; i++) {
+  for (var j = currentN.length - 1; j > -1; j--) {
+    let addCarry = (carry) ? +carry : 0;
+    let multiplyIndex = (+currentN.charAt(j) * myInt + addCarry).toString();
+
+    if (multiplyIndex.length > 1) {
+      carry = multiplyIndex.slice(0, -1);
+      newNumChar = multiplyIndex.slice(- 1);
+      newN = newNumChar + newN;
+    } else {
+      carry = '';
+      newN = multiplyIndex + newN;
+    }
+  }
+  currentN = carry + newN;
+  newN = '';
+  carry = '';
+}
+
+// let finalSum = 0;
+// for (var i = 0; i < currentN.length; i++) {
+//   finalSum += +currentN[i];
+// }
+// console.log(currentN);
+// console.log(finalSum);
+  $('#bigInteger').html('<p>' + currentN + '</p>');
+}
+
+function multiplyAny() {
+let topNum = $('#firstNum').val();
+let bottomNum = $('#secondNum').val();
+
+let newN = '';
+let carry = '';
+let addArray = [];
+
+let numZeroes = '';
+
+for (var i = bottomNum.length - 1; i > -1; i--) {
+  (numZeroes) ? newN = numZeroes : i;
+  for (var k = topNum.length - 1; k > -1; k--) {
+    let addCarry = (carry) ? +carry : 0;
+    let multiplyIndex = (+bottomNum.charAt(i) * +topNum.charAt(k) + addCarry).toString();
+    if (multiplyIndex.length > 1) {
+      carry = multiplyIndex.slice(0, -1);
+      newNumChar = multiplyIndex.slice(- 1);
+      newN = newNumChar + newN;
+    } else {
+      carry = '';
+      newN = multiplyIndex + newN;
+    }
+  }
+
+  if (i === 0) {
+    newN = carry + newN;
+    addArray.push(newN);
+    newN = '';
+    numZeroes = '';
+  } else {
+    newN = carry + newN;
+    addArray.push(newN);
+    numZeroes += '0';
+    carry = '';
+  }
+}
+
+let bigIntAnswer = ''
+let finalCarry = '';
+let finalCounter = 0;
+let longest = addArray.reduce(function (a, b) { return a.length > b.length ? a : b; });
+let indexPos = -1;
+
+for (var l = 0; l < longest.length; l++) {
+  for (var v = 0; v < addArray.length; v++) {
+    finalCounter += (addArray[v].charAt(addArray[v].length + indexPos)) ? +addArray[v].charAt(addArray[v].length + indexPos) : 0;
+  }
+  indexPos --;
+  finalCounter = +finalCarry + finalCounter;
+  finalCounter = finalCounter.toString();
+  if (finalCounter.length > 1) {
+    finalCarry = finalCounter.slice(0, -1);
+    bigIntAnswer = finalCounter.slice(- 1) + bigIntAnswer;
+    finalCounter = 0;
+  } else {
+    bigIntAnswer = finalCounter + bigIntAnswer;
+    finalCarry = '';
+    finalCounter = 0;
+  }
+  if (l === longest.length - 1) {
+    bigIntAnswer = finalCarry + bigIntAnswer;
+  }
+}
+console.log('THE ANSWER: ' + bigIntAnswer);
+$('#bigInteger').html('<p>' + bigIntAnswer + '</p>');
+
+}
+
+function bigAc() {
+  $('#firstNum').val('');
+  $('#secondNum').val('');
+  $('#bigInteger').html('');
+  console.log('success');
+}
+
+$('#bigEquals').on('click', () => {
+  (type === 'exponent') ? bigExponent() : multiplyAny();
+});
+$('#bigAc').on('click', () => bigAc());
+$('#sel1').on('change', () => {
+  ($('#sel1').val() === 'exponent') ?
+    type = 'exponent' :
+    type = 'multiply';
+});

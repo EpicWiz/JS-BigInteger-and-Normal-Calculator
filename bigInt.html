@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>An HTML-Bootstrap/JavaScript Calculator</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    .calcMain { padding: 150px; }
+    .calc { width: 100%; margin-top: 5px; }
+    .calcWrap { margin: 0; padding: 3px; }
+    .dont-break-out {
+      /* These are technically the same, but use both */
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+
+      -ms-word-break: break-all;
+      /* This is the dangerous one in WebKit, as it breaks things wherever */
+      word-break: break-all;
+      /* Instead use this non-standard one: */
+      word-break: break-word;
+
+      /* Adds a hyphen where the word breaks, if supported (No Blink) */
+      -ms-hyphens: auto;
+      -moz-hyphens: auto;
+      -webkit-hyphens: auto;
+      hyphens: auto;
+}
+  </style>
+</head>
+<body>
+<div class="container well calcMain">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1 class="text-center">Big Integer Calculator</h1>
+      <p>After a certain point, the calculations may take some time.</p>
+    </div>
+  </div>
+  <div class="row">
+    <div id="bigInteger" class="col-sm-4 dont-break-out">
+    </div>
+    <div class="col-sm-4 calcWrap">
+        <label for="firstNum">First Number:</label>
+          <input type="text" class="form-control text-right" id="firstNum" placeholder="numbers only">
+        <label for="secondNum">Second Number:</label>
+          <input type="text" class="form-control text-right" id="secondNum" placeholder="numbers only (exponent)">
+        <button class="btn btn-success calc" id="bigAc">AC</button>
+        <button class="btn btn-danger calc" id="bigEquals">=</button>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-group">
+        <label for="sel1">(default: exponent):</label>
+        <select class="form-control" id="sel1">
+          <option value="exponent">Select One</option>
+          <option value="exponent">Exponent</option>
+          <option value="multiply">Multiply</option>
+        </select>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div id="changeView" class="col-sm-4">
+        Need a normal calculator?<br>
+        <a href="index.html"><button id="normCalc" class="btn btn-link">Click here.</button></a>
+      </div>
+      <div class="col-sm-4"></div>
+      <div class="col-sm-4"></div>
+    </div>
+  </div>
+
+<script src="script.js"></script>
+</body>
+</html>
