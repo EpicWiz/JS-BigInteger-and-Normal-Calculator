@@ -309,7 +309,6 @@ function bigAc() {
   $('#firstNum').val('');
   $('#secondNum').val('');
   $('#bigInteger').html('');
-  console.log('success');
 }
 
 $('#bigEquals').on('click', () => {
